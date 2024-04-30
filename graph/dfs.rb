@@ -44,14 +44,14 @@ def dfs_traversal(adj_list, orignode)
 end
 
 
-def dfs_path_list(adj_list, orig_vertex, dest_vertex)
+def dfs_path_list(adj_list, origin, destination)
     Enumerator.new do |gen|
-        stack = [[orig_vertex, [orig_vertex]]]
+        stack = [[origin, [origin]]]
         while !stack.empty?
             inode, path = stack.pop
             adj_list[inode.to_sym].reverse.each do |jnode|
                 if !path.include?(jnode)
-                    if jnode == dest_vertex
+                    if jnode == destination
                         gen.yield path + [jnode]
                     else
                         stack.push([jnode, path + [jnode]])

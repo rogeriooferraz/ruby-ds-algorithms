@@ -23,7 +23,7 @@ SOFTWARE.
 =end
 
 
-class MyQueue
+class CanonicalQueue
 
     def initialize
         @front = nil
@@ -41,7 +41,7 @@ class MyQueue
     end
 
     def enqueue(data)
-        temp = MyNode.new(data)
+        temp = Node.new(data)
         if @rear
             @rear.next = temp
         else
@@ -67,7 +67,7 @@ class MyQueue
 end
 
 
-class MyNode
+class Node
 
     attr_reader :container
     attr_accessor :next

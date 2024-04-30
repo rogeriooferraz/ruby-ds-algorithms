@@ -59,10 +59,10 @@ class Graph
         end
     end
 
-    def bfsTraversal(orig_node)
-        queue = MyQueue.new
-        queue.enqueue(orig_node)
-        visited = [orig_node]
+    def bfsTraversal(origin)
+        queue = CanonicalQueue.new
+        queue.enqueue(origin)
+        visited = [origin]
         while !queue.empty?
             inode = queue.dequeue
             @adj_list[inode.to_sym].each do |jnode|
@@ -75,15 +75,15 @@ class Graph
         visited
     end
 
-    def bfsPathList(orig_vertex, dest_vertex)
+    def bfsPathList(origin, destination)
         Enumerator.new do |gen|
-            queue = MyQueue.new
-            queue.enqueue([orig_vertex, [orig_vertex]])
+            queue = CanonicalQueue.new
+            queue.enqueue([origin, [origin]])
             while !queue.empty?
                 inode, path = queue.dequeue
                 @adj_list[inode.to_sym].each do |jnode|
                     if !path.include?(jnode)
-                        if jnode == dest_vertex
+                        if jnode == destination
                             gen.yield path + [jnode]
                         else
                             queue.enqueue([jnode, path + [jnode]])
@@ -94,17 +94,17 @@ class Graph
         end
     end
 
-    def bfsShortestPath(orig_vertex, dest_vertex)
+    def bfsShortestPath(origin, destination)
         begin
-            bfsPathList(orig_vertex, dest_vertex).next
+            bfsPathList(origin, destination).next
         rescue StopIteration
             nil
         end
     end
 
-    def dfsTraversal(orig_node)
-        stack = MyStack.new
-        stack.push(orig_node)
+    def dfsTraversal(origin)
+        stack = CanonicalStack.new
+        stack.push(origin)
         visited = []
         while !stack.empty?
             inode = stack.pop
@@ -120,15 +120,15 @@ class Graph
         visited
     end
 
-    def dfsPathList(orig_vertex, dest_vertex)
+    def dfsPathList(origin, destination)
         Enumerator.new do |gen|
-            stack = MyStack.new
-            stack.push([orig_vertex, [orig_vertex]])
+            stack = CanonicalStack.new
+            stack.push([origin, [origin]])
             while !stack.empty?
                 inode, path = stack.pop
                 @adj_list[inode.to_sym].reverse.each do |jnode|
                     if !path.include?(jnode)
-                        if jnode == dest_vertex
+                        if jnode == destination
                             gen.yield path + [jnode]
                         else
                             stack.push([jnode, path + [jnode]])

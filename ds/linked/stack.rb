@@ -23,14 +23,14 @@ SOFTWARE.
 =end
 
 
-class MyStack
+class CanonicalStack
 
     def initialize
         @top = nil
     end
 
     def push(data)
-        temp = MyNode.new(data)
+        temp = Node.new(data)
         temp.next = @top
         @top = temp
     end
@@ -59,7 +59,7 @@ class MyStack
 end
 
 
-class MyNode
+class Node
 
     attr_reader :container
     attr_accessor :next

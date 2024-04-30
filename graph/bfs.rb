@@ -26,10 +26,10 @@ SOFTWARE.
 require_relative "graph"
 
 
-def bfs_traversal(adj_list, orig_node)
-  visited = [orig_node]
+def bfs_traversal(adj_list, origin)
+  visited = [origin]
   queue = Queue.new
-  queue.enq(orig_node)
+  queue.enq(origin)
   while !queue.empty?
     inode = queue.deq
     adj_list[inode.to_sym].each do |jnode|
@@ -43,15 +43,15 @@ def bfs_traversal(adj_list, orig_node)
 end
 
 
-def bfs_path_list(adj_list, orig_vertex, dest_vertex)
+def bfs_path_list(adj_list, origin, destination)
   Enumerator.new do |gen|
     queue = Queue.new
-    queue.enq([orig_vertex, [orig_vertex]])
+    queue.enq([origin, [origin]])
     while !queue.empty?
       (inode, path) = queue.deq
       adj_list[inode.to_sym].each do |jnode|
         if !path.include?(jnode)
-          if jnode == dest_vertex
+          if jnode == destination
             gen.yield path + [jnode]
           else
             queue.enq([jnode, path + [jnode]])
@@ -62,9 +62,9 @@ def bfs_path_list(adj_list, orig_vertex, dest_vertex)
   end
 end
 
-def bfs_shortest_path(adj_list, orig_vertex, dest_vertex)
+def bfs_shortest_path(adj_list, origin, destination)
   begin
-    bfs_path_list(adj_list, orig_vertex, dest_vertex).next
+    bfs_path_list(adj_list, origin, destination).next
   rescue StopIteration
     ""
   end

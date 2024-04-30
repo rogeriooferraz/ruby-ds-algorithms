@@ -23,6 +23,8 @@ SOFTWARE.
 =end
 
 
-class MyStack < Array
+class CanonicalQueue < Thread::Queue
 
+  alias enqueue enq
+  alias dequeue deq
 end
