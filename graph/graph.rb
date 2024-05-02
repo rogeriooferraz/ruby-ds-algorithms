@@ -26,6 +26,8 @@ SOFTWARE.
 require_relative "../ds/linked/queue"
 require_relative "../ds/linked/stack"
 
+include Canonical
+
 
 class Graph
 
@@ -60,7 +62,7 @@ class Graph
     end
 
     def bfsTraversal(origin)
-        queue = CanonicalQueue.new
+        queue = Canonical::Queue.new
         queue.enqueue(origin)
         visited = [origin]
         while !queue.empty?
@@ -77,7 +79,7 @@ class Graph
 
     def bfsPathList(origin, destination)
         Enumerator.new do |gen|
-            queue = CanonicalQueue.new
+            queue = Canonical::Queue.new
             queue.enqueue([origin, [origin]])
             while !queue.empty?
                 inode, path = queue.dequeue
@@ -103,7 +105,7 @@ class Graph
     end
 
     def dfsTraversal(origin)
-        stack = CanonicalStack.new
+        stack = Canonical::Stack.new
         stack.push(origin)
         visited = []
         while !stack.empty?
@@ -122,7 +124,7 @@ class Graph
 
     def dfsPathList(origin, destination)
         Enumerator.new do |gen|
-            stack = CanonicalStack.new
+            stack = Canonical::Stack.new
             stack.push([origin, [origin]])
             while !stack.empty?
                 inode, path = stack.pop

@@ -22,7 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 =end
 
+module Canonical
 
-class CanonicalStack < Array
+  class Stack < ::Array
 
+  end
 end

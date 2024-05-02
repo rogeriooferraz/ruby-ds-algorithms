@@ -23,57 +23,60 @@ SOFTWARE.
 =end
 
 
-class CanonicalStack
+module Canonical
+
+  class Stack
 
     def initialize
-        @top = nil
+      @top = nil
     end
 
     def push(data)
-        temp = Node.new(data)
-        temp.next = @top
-        @top = temp
+      temp = Node.new(data)
+      temp.next = @top
+      @top = temp
     end
 
     def pop
-        if @top
-            data = @top.container
-            @top = @top.next
-            return data
-        end
+      if @top
+        data = @top.container
+        @top = @top.next
+        return data
+      end
     end
 
     def empty?
-        return @top == nil
+      @top == nil
     end
 
     def to_s
-        output = ""
-        p = @top 
-        while p
-            output += str(p.container) + " "
-            p = p.next 
-        end
-        return output
+      output = ""
+      p = @top
+      while p
+        output += str(p.container) + " "
+        p = p.next
+      end
+      output
     end
-end
+  end
 
 
-class Node
+  class Node
 
     attr_reader :container
     attr_accessor :next
 
     def initialize(data)
-        @container = data
-        @next = nil
+      @container = data
+      @next = nil
     end
 
     def to_s
-        @container.to_s
+      @container.to_s
     end
 
     def ==(other)
-        self.to_s == other.to_s
+      self.to_s == other.to_s
     end
+  end
 end

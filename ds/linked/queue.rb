@@ -22,66 +22,68 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 =end
 
+module Canonical
 
-class CanonicalQueue
+  class Queue
 
     def initialize
-        @front = nil
-        @rear = nil
-    end
-
-    def to_s
-        output = ""
-        p = @front
-        while p
-            output += str(p.container) + " "
-            p = p.next
-        end
-        return output
+      @front = nil
+      @rear = nil
     end
 
     def enqueue(data)
-        temp = Node.new(data)
-        if @rear
-            @rear.next = temp
-        else
-            @front = temp
-        end
-        @rear = temp
+      temp = Node.new(data)
+      if @rear
+        @rear.next = temp
+      else
+        @front = temp
+      end
+      @rear = temp
     end
 
     def dequeue
-        if @front
-            data = @front.container
-            @front = @front.next
-            if empty?
-                @rear = nil
-            end
-            return data
+      if @front
+        data = @front.container
+        @front = @front.next
+        if empty?
+          @rear = nil
         end
+        return data
+      end
     end
 
     def empty?
-        return @front == nil
+      @front == nil
     end
-end
+
+    def to_s
+      output = ""
+      p = @front
+      while p
+        output += str(p.container) + " "
+        p = p.next
+      end
+      output
+    end
+  end
 
 
-class Node
+  class Node
 
     attr_reader :container
     attr_accessor :next
 
     def initialize(data)
-        @container = data
-        @next = nil
+      @container = data
+      @next = nil
     end
 
     def to_s
-        @container.to_s
+      @container.to_s
     end
 
     def ==(other)
-        self.to_s == other.to_s
+      self.to_s == other.to_s
     end
+  end
 end
