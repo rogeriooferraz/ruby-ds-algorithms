@@ -22,61 +22,39 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 =end
 
+require_relative "./canonic_stack_node"
 
-module Canonical
+class CanonicStack
 
-  class Stack
+  def initialize
+    @top = nil
+  end
 
-    def initialize
-      @top = nil
-    end
+  def push(data)
+    temp = CanonicStackNode.new(data)
+    temp.next = @top
+    @top = temp
+  end
 
-    def push(data)
-      temp = Node.new(data)
-      temp.next = @top
-      @top = temp
-    end
-
-    def pop
-      if @top
-        data = @top.container
-        @top = @top.next
-        return data
-      end
-    end
-
-    def empty?
-      @top == nil
-    end
-
-    def to_s
-      output = ""
-      p = @top
-      while p
-        output += str(p.container) + " "
-        p = p.next
-      end
-      output
+  def pop
+    if @top
+      data = @top.container
+      @top = @top.next
+      return data
     end
   end
 
+  def empty?
+    @top == nil
+  end
 
-  class Node
-
-    attr_reader :container
-    attr_accessor :next
-
-    def initialize(data)
-      @container = data
-      @next = nil
+  def to_s
+    output = ""
+    p = @top
+    while p
+      output += str(p.container) + " "
+      p = p.next
     end
-
-    def to_s
-      @container.to_s
-    end
-
-    def ==(other)
-      self.to_s == other.to_s
-    end
+    output
   end
 end

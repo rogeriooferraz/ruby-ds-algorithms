@@ -22,68 +22,40 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 =end
 
-module Canonical
+module DepthFirstSearch
 
-  class Queue
-
-    def initialize
-      @front = nil
-      @rear = nil
-    end
-
-    def enqueue(data)
-      temp = Node.new(data)
-      if @rear
-        @rear.next = temp
-      else
-        @front = temp
+  def dfs_traversal(adj_list, orignode)
+    visited = []
+    stack = [orignode]
+    while !stack.empty?
+      inode = stack.pop
+      if !visited.include?(inode)
+        visited.append(inode)
       end
-      @rear = temp
-    end
-
-    def dequeue
-      if @front
-        data = @front.container
-        @front = @front.next
-        if empty?
-          @rear = nil
+      adj_list[inode.to_sym].reverse.each do |jnode|
+        if !visited.include?(jnode)
+          stack.push(jnode)
         end
-        return data
       end
     end
-
-    def empty?
-      @front == nil
-    end
-
-    def to_s
-      output = ""
-      p = @front
-      while p
-        output += str(p.container) + " "
-        p = p.next
-      end
-      output
-    end
+    visited
   end
 
-
-  class Node
-
-    attr_reader :container
-    attr_accessor :next
-
-    def initialize(data)
-      @container = data
-      @next = nil
-    end
-
-    def to_s
-      @container.to_s
-    end
-
-    def ==(other)
-      self.to_s == other.to_s
+  def dfs_path_list(adj_list, origin, destination)
+    Enumerator.new do |gen|
+      stack = [[origin, [origin]]]
+      while !stack.empty?
+        inode, path = stack.pop
+        adj_list[inode.to_sym].reverse.each do |jnode|
+          if !path.include?(jnode)
+            if jnode == destination
+              gen.yield path + [jnode]
+            else
+              stack.push([jnode, path + [jnode]])
+            end
+          end
+        end
+      end
     end
   end
 end
