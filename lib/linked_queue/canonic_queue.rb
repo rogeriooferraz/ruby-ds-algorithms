@@ -22,68 +22,52 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 =end
 
-module Canonical
+require_relative "./canonic_queue_node"
 
-  class Queue
+class CanonicQueue
 
-    def initialize
-      @front = nil
-      @rear = nil
+  attr_reader :front, :rear
+
+  def initialize
+    @front = nil
+    @rear = nil
+  end
+
+  def enqueue(data)
+    temp = CanonicQueueNode.new(data)
+    if @rear
+      @rear.next = temp
+    else
+      @front = temp
     end
+    @rear = temp
+  end
 
-    def enqueue(data)
-      temp = Node.new(data)
-      if @rear
-        @rear.next = temp
-      else
-        @front = temp
+  def dequeue
+    if @front
+      data = @front.container
+      @front = @front.next
+      if empty?
+        @rear = nil
       end
-      @rear = temp
-    end
-
-    def dequeue
-      if @front
-        data = @front.container
-        @front = @front.next
-        if empty?
-          @rear = nil
-        end
-        return data
-      end
-    end
-
-    def empty?
-      @front == nil
-    end
-
-    def to_s
-      output = ""
-      p = @front
-      while p
-        output += str(p.container) + " "
-        p = p.next
-      end
-      output
+      return data
     end
   end
 
-
-  class Node
-
-    attr_reader :container
-    attr_accessor :next
-
-    def initialize(data)
-      @container = data
-      @next = nil
-    end
-
-    def to_s
-      @container.to_s
-    end
-
-    def ==(other)
-      self.to_s == other.to_s
-    end
+  def empty?
+    @front == nil
   end
+
+  def to_s
+    output = ""
+    p = @front
+    while p
+      output += str(p.container) + " "
+      p = p.next
+    end
+    output
+  end
+
+  alias enq enqueue
+  alias deq dequeue
 end

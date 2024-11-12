@@ -22,11 +22,40 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 =end
 
-module Canonical
+module DepthFirstSearch
 
-  class Queue < ::Queue
+  def dfs_traversal(adj_list, orignode)
+    visited = []
+    stack = [orignode]
+    while !stack.empty?
+      inode = stack.pop
+      if !visited.include?(inode)
+        visited.append(inode)
+      end
+      adj_list[inode.to_sym].reverse.each do |jnode|
+        if !visited.include?(jnode)
+          stack.push(jnode)
+        end
+      end
+    end
+    visited
+  end
 
-    alias enqueue enq
-    alias dequeue deq
+  def dfs_path_list(adj_list, origin, destination)
+    Enumerator.new do |gen|
+      stack = [[origin, [origin]]]
+      while !stack.empty?
+        inode, path = stack.pop
+        adj_list[inode.to_sym].reverse.each do |jnode|
+          if !path.include?(jnode)
+            if jnode == destination
+              gen.yield path + [jnode]
+            else
+              stack.push([jnode, path + [jnode]])
+            end
+          end
+        end
+      end
+    end
   end
 end

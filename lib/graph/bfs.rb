@@ -22,61 +22,48 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 =end
 
+module BreadthFirstSearch
 
-module Canonical
-
-  class Stack
-
-    def initialize
-      @top = nil
-    end
-
-    def push(data)
-      temp = Node.new(data)
-      temp.next = @top
-      @top = temp
-    end
-
-    def pop
-      if @top
-        data = @top.container
-        @top = @top.next
-        return data
+  def bfs_traversal(adj_list, origin)
+    visited = [origin]
+    queue = Queue.new
+    queue.enq(origin)
+    while !queue.empty?
+      inode = queue.deq
+      adj_list[inode.to_sym].each do |jnode|
+        if !visited.include?(jnode)
+          visited.append(jnode)
+          queue.enq(jnode)
+        end
       end
     end
+    visited
+  end
 
-    def empty?
-      @top == nil
-    end
-
-    def to_s
-      output = ""
-      p = @top
-      while p
-        output += str(p.container) + " "
-        p = p.next
+  def bfs_path_list(adj_list, origin, destination)
+    Enumerator.new do |gen|
+      queue = Queue.new
+      queue.enq([origin, [origin]])
+      while !queue.empty?
+        (inode, path) = queue.deq
+        adj_list[inode.to_sym].each do |jnode|
+          if !path.include?(jnode)
+            if jnode == destination
+              gen.yield path + [jnode]
+            else
+              queue.enq([jnode, path + [jnode]])
+            end
+          end
+        end
       end
-      output
     end
   end
 
-
-  class Node
-
-    attr_reader :container
-    attr_accessor :next
-
-    def initialize(data)
-      @container = data
-      @next = nil
-    end
-
-    def to_s
-      @container.to_s
-    end
-
-    def ==(other)
-      self.to_s == other.to_s
+  def bfs_shortest_path(adj_list, origin, destination)
+    begin
+      bfs_path_list(adj_list, origin, destination).next
+    rescue StopIteration
+      ""
     end
   end
 end
