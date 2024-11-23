@@ -9,3 +9,4 @@ It supports the following data-structures and algorithms.
 - Breadth-First Search (BFS) algorithm functions module
 - Depth-First Search (DFS) algorithm functions module
 - Graph: a class with BFS and DFS algorithms
+- Binary Search Tree
